@@ -462,11 +462,11 @@ class _RegisterUserState extends State<RegisterUser> {
                                 _registerUserViewModel.busy = true;
                               });
 
-                              _registerUserViewModel.email = _email.text;
-                              _registerUserViewModel.password = _password.text;
-                              _registerUserViewModel.name = _name.text;
-                              _registerUserViewModel.cep = _cep.text;
-                              _registerUserViewModel.address = _address.text;
+                              _registerUserViewModel.email = _email.text.trim();
+                              _registerUserViewModel.password = _password.text.trim();
+                              _registerUserViewModel.name = _name.text.trim();
+                              _registerUserViewModel.cep = _cep.text.trim();
+                              _registerUserViewModel.address = _address.text.trim();
 
                               _userController
                                   .post(_registerUserViewModel)
