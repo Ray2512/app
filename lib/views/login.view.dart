@@ -209,23 +209,19 @@ class _LoginPageState extends State<LoginPage> {
                                 ],
                               ),
                               onPressed: () async {
-                                setState(() {
-                                  _isEmailValid = _loginController
-                                      .validateEmail(_email.text);
-                                  _isPasswordValid = _loginController
-                                      .validatePassword(_password.text);
-                                });
-
+                                _isEmailValid =
+                                    _loginController.validateEmail(_email.text);
+                                _isPasswordValid = 
+                                    _loginController.validatePassword(_password.text);
                                 if (_isEmailValid && _isPasswordValid) {
+                                  _loginViewModel.login = _email.text;
+                                  _loginViewModel.password = _password.text;
                                   setState(() {
-                                    _loginViewModel.login = _email.text;
-                                    _loginViewModel.password = _password.text;
                                     _loginViewModel.busy = true;
                                   });
                                   try {
                                     _userModel = await _loginController
                                         .post(_loginViewModel);
-
                                     _appStore.setUser(
                                         _userModel.getStrLogin,
                                         _userModel.getStrPassword,
@@ -233,21 +229,20 @@ class _LoginPageState extends State<LoginPage> {
                                         _userModel.getStrLevelPlay,
                                         _userModel.getdblAddressLat,
                                         _userModel.getdblAddressLong);
-
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => HomePage(),
                                       ),
                                     );
+                                    _loginViewModel.busy = false;
                                   } catch (e) {
                                     Fluttertoast.showToast(
                                         msg: "Usuário e/ou senha inválidos.");
+                                    setState(() {
+                                      _loginViewModel.busy = false;
+                                    });
                                   }
-
-                                  setState(() {
-                                    _loginViewModel.busy = false;
-                                  });
                                 }
                               },
                             ),
