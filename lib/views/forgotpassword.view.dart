@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tennis_play_all/controllers/password_recovery.controller.dart';
+import 'package:tennis_play_all/repositories/password_recovery.repository.dart';
+import 'package:tennis_play_all/view-models/password_recovery.view-model.dart';
 import 'requiredcode.view.dart';
 
-class ForgotPassword extends StatelessWidget {
+class ForgotPassword extends StatefulWidget {
+  @override
+  _ForgotPasswordState createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends State<ForgotPassword> {
+  PasswordRecoveryController _passwordRecoveryController =
+      PasswordRecoveryController(PasswordRecoveryRepository());
+  PasswordRecoveryViewModel _passwordRecoveryViewModel =
+      PasswordRecoveryViewModel();
+  TextEditingController _email = TextEditingController();
+  bool _isEmailValid = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,8 +120,9 @@ class ForgotPassword extends StatelessWidget {
                       color: Colors.green[50],
                     ),
                     child: TextField(
-                      //controller: email,
+                      controller: _email,
                       decoration: InputDecoration(
+                        errorText: _isEmailValid ? null : 'E-mail inválido',
                         border: InputBorder.none,
                         icon: Icon(
                           Icons.email,
@@ -152,16 +169,29 @@ class ForgotPassword extends StatelessWidget {
                             ),
                           ],
                         ),
-                        onPressed: () {
-                          // colocar o código que manda a solicitação do link
-
-                          // Abre a pagina para digitar o código recebido no link
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RequiredCodePage(),
-                            ),
-                          );
+                        onPressed: () async {
+                          _passwordRecoveryViewModel.email = _email.text.trim();
+                          _isEmailValid = _passwordRecoveryController
+                              .validateEmail(_passwordRecoveryViewModel.email);
+                          if (_isEmailValid) {
+                            try {
+                              if ( await _passwordRecoveryController
+                                  .post(_passwordRecoveryViewModel) )
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => RequiredCodePage(),
+                                  ),
+                                );
+                            } catch (e) {
+                              Fluttertoast.showToast(
+                                  gravity: ToastGravity.CENTER,
+                                  msg:
+                                      "Não foi possível enviar código de validação.");
+                            }
+                          } else {
+                            setState(() {});
+                          }
                         },
                       ),
                     ),
