@@ -4,12 +4,10 @@ import 'package:tennis_play_all/models/user.model.dart';
 import 'package:tennis_play_all/repositories/login.repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tennis_play_all/repositories/user.repository.dart';
 import 'package:tennis_play_all/stores/app.store.dart';
 import 'package:tennis_play_all/view-models/login.view-model.dart';
 import 'home.view.dart';
 import 'forgotpassword.view.dart';
-import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
