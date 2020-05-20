@@ -135,67 +135,86 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   SizedBox(
                     height: 30,
                   ),
-                  Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: [0.3, 1],
-                        colors: [
-                          Color(0xFF33691E),
-                          Color(0xFF64DD17),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    child: SizedBox.expand(
-                      child: FlatButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "Solicitar Link",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                              textAlign: TextAlign.center,
+                  _passwordRecoveryViewModel.busy
+                      ? Center(
+                          child: Container(
+                            child: CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Colors.green),
+                              backgroundColor: Colors.white,
                             ),
-                          ],
-                        ),
-                        onPressed: () async {
-                          _passwordRecoveryViewModel.email = _email.text.trim();
-                          _isEmailValid = _passwordRecoveryController
-                              .validateEmail(_passwordRecoveryViewModel.email);
-                          if (_isEmailValid) {
-                            try {
-                              if ( await _passwordRecoveryController
-                                  .post(_passwordRecoveryViewModel) )
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => RequiredCodePage(),
+                          ),
+                        )
+                      : Container(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width / 1.2,
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              stops: [0.3, 1],
+                              colors: [
+                                Color(0xFF33691E),
+                                Color(0xFF64DD17),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: SizedBox.expand(
+                            child: FlatButton(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "Solicitar Link",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                );
-                            } catch (e) {
-                              Fluttertoast.showToast(
-                                  gravity: ToastGravity.CENTER,
-                                  msg:
-                                      "Não foi possível enviar código de validação.");
-                            }
-                          } else {
-                            setState(() {});
-                          }
-                        },
-                      ),
-                    ),
-                  ),
+                                ],
+                              ),
+                              onPressed: () async {
+                                _passwordRecoveryViewModel.email =
+                                    _email.text.trim();
+                                _isEmailValid =
+                                    _passwordRecoveryController.validateEmail(
+                                        _passwordRecoveryViewModel.email);
+                                if (_isEmailValid) {
+                                  setState(() {
+                                    _passwordRecoveryViewModel.busy = true;
+                                  });
+                                  try {
+                                    if (await _passwordRecoveryController
+                                        .post(_passwordRecoveryViewModel))
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              RequiredCodePage(),
+                                        ),
+                                      );
+                                  } catch (e) {
+                                    Fluttertoast.showToast(
+                                        gravity: ToastGravity.CENTER,
+                                        msg:
+                                            "Não foi possível enviar código de validação.");
+                                  }
+                                  setState(() {
+                                    _passwordRecoveryViewModel.busy = false;
+                                  });
+                                } else {
+                                  setState(() {});
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
