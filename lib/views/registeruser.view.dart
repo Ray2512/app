@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:tennis_play_all/controllers/user.controller.dart';
-import 'package:tennis_play_all/models/user.model.dart';
-import 'package:tennis_play_all/repositories/user.repository.dart';
+import 'package:provider/provider.dart';
+import 'package:tennis_play_all/stores/user.store.dart';
 import 'package:tennis_play_all/view-models/registeruser.view-model.dart';
 import 'phone.view.dart';
 
@@ -19,7 +17,11 @@ class RegisterUser extends StatefulWidget {
 
 class _RegisterUserState extends State<RegisterUser> {
   //inicio do código para se usar o dropdownbutton
-  List<dynamic> _listGender = ["Selecione o Genero", "Masculino", "Feminino"];
+  List<dynamic> _listGender = [
+    "Selecione o Genero",
+    "Masculino",
+    "Feminino"
+  ];
   List<dynamic> _listPlayerLevel = [
     "Selecione nivel jogador",
     "ITN 10.1 a 10.3 - Iniciante",
@@ -41,7 +43,8 @@ class _RegisterUserState extends State<RegisterUser> {
   // TO-DO: repetir senha, controller e validação entre senhas.
 
   RegisterUserViewModel _registerUserViewModel = RegisterUserViewModel();
-  UserController _userController = UserController(UserRepository());
+
+  UserStore _userStore;
 
   @override
   void initState() {
@@ -67,8 +70,7 @@ class _RegisterUserState extends State<RegisterUser> {
   List<DropdownMenuItem<String>> getDropDownMenuItemsGender() {
     List<DropdownMenuItem<String>> itemsGender = new List();
     for (String gender in _listGender) {
-      itemsGender
-          .add(new DropdownMenuItem(value: gender, child: new Text(gender)));
+      itemsGender.add(new DropdownMenuItem(value: gender, child: new Text(gender)));
     }
     return itemsGender;
   }
@@ -76,8 +78,7 @@ class _RegisterUserState extends State<RegisterUser> {
   List<DropdownMenuItem<String>> getDropDownMenuItemsPlayer() {
     List<DropdownMenuItem<String>> itemsPlayerLevel = new List();
     for (String playerlevel in _listPlayerLevel) {
-      itemsPlayerLevel.add(new DropdownMenuItem(
-          value: playerlevel, child: new Text(playerlevel)));
+      itemsPlayerLevel.add(new DropdownMenuItem(value: playerlevel, child: new Text(playerlevel)));
     }
     return itemsPlayerLevel;
   }
@@ -85,6 +86,7 @@ class _RegisterUserState extends State<RegisterUser> {
 
   @override
   Widget build(BuildContext context) {
+    _userStore = Provider.of<UserStore>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -123,7 +125,10 @@ class _RegisterUserState extends State<RegisterUser> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            stops: [0.3, 1],
+            stops: [
+              0.3,
+              1
+            ],
             colors: [
               Color(0xFF33691E),
               Color(0xFF64DD17),
@@ -145,7 +150,10 @@ class _RegisterUserState extends State<RegisterUser> {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  stops: [0.3, 1],
+                  stops: [
+                    0.3,
+                    1
+                  ],
                   colors: [
                     Color(0xFF33691E),
                     Color(0xFF64DD17),
@@ -254,8 +262,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
-                  padding:
-                      EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                  padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     color: Colors.green[50],
@@ -276,8 +283,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
-                  padding:
-                      EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                  padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     color: Colors.green[50],
@@ -299,8 +305,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
-                  padding:
-                      EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                  padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     color: Colors.green[50],
@@ -321,8 +326,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
-                  padding:
-                      EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                  padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     color: Colors.green[50],
@@ -343,8 +347,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
-                  padding:
-                      EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                  padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     color: Colors.green[50],
@@ -365,8 +368,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
-                  padding:
-                      EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                  padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     color: Colors.green[50],
@@ -412,8 +414,7 @@ class _RegisterUserState extends State<RegisterUser> {
                     ? Center(
                         child: Container(
                           child: CircularProgressIndicator(
-                            valueColor:
-                                new AlwaysStoppedAnimation<Color>(Colors.green),
+                            valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
                             backgroundColor: Colors.white,
                           ),
                         ),
@@ -426,7 +427,10 @@ class _RegisterUserState extends State<RegisterUser> {
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
-                            stops: [0.3, 1],
+                            stops: [
+                              0.3,
+                              1
+                            ],
                             colors: [
                               Color(0xFF33691E),
                               Color(0xFF64DD17),
@@ -453,12 +457,11 @@ class _RegisterUserState extends State<RegisterUser> {
                               ],
                             ),
                             onPressed: () async {
-                          
                               // TO-DO: refatorar para invocar método de construção e tratar demais atributos de User.
                               // TO-DO: IF todos os inputs estão válidos THEN
                               // TO-DO: Trazer POST em USER quando a view Phone Page ficar pronta.
                               // TO-DO: inviabilizar /t (por exemplo) em campos de input.
-                               setState(() {
+                              setState(() {
                                 _registerUserViewModel.busy = true;
                               });
 
@@ -468,23 +471,12 @@ class _RegisterUserState extends State<RegisterUser> {
                               _registerUserViewModel.cep = _cep.text.trim();
                               _registerUserViewModel.address = _address.text.trim();
 
-                              _userController
-                                  .post(_registerUserViewModel)
-                                  .then((data) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => PhonePage(),
-                                    ));
-                              }).catchError((data) {
-                                Fluttertoast.showToast(
-                                    msg: "Erro ao cadastrar dados");
-                              }).whenComplete(() {
-                                setState(() {
-                                  _registerUserViewModel.busy = false;
-                                });
-                              });
-                              
+                              _userStore.setUser(_email.text.trim(), _password.text.trim(), _name.text.trim(), _cep.text.trim(), _address.text.trim());
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PhonePage(),
+                                  ));
 
                               // TO-DO: ENDIF
                               // UserModel _user = UserModel();
