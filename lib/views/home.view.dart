@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_play_all/stores/app.store.dart';
-import 'registeruser.view.dart';
-import 'login.view.dart';
 
 class HomePage extends StatelessWidget {
   AppStore _appStore;
@@ -28,7 +26,10 @@ class HomePage extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  stops: [0.3, 1],
+                  stops: [
+                    0.3,
+                    1
+                  ],
                   colors: [
                     Color(0xFF33691E),
                     Color(0xFF64DD17),

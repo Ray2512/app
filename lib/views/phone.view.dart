@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
-import 'home.view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:tennis_play_all/controllers/user.controller.dart';
+import 'package:tennis_play_all/repositories/user.repository.dart';
+import 'package:tennis_play_all/stores/user.store.dart';
+import 'package:tennis_play_all/view-models/registeruser.view-model.dart';
+import 'login.view.dart';
 
-class PhonePage extends StatelessWidget {
+class PhonePage extends StatefulWidget {
   @override
-    @override
+  _PhonePageState createState() => _PhonePageState();
+}
+
+class _PhonePageState extends State<PhonePage> {
+  UserStore _userStore;
+  UserController _userController = UserController(UserRepository());
+
+  TextEditingController _phone = TextEditingController();
+
+  @override
+  @override
   Widget build(BuildContext context) {
+    _userStore = Provider.of<UserStore>(context);
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -23,7 +40,10 @@ class PhonePage extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  stops: [0.3, 1],
+                  stops: [
+                    0.3,
+                    1
+                  ],
                   colors: [
                     Color(0xFF33691E),
                     Color(0xFF64DD17),
@@ -104,8 +124,7 @@ class PhonePage extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width * 0.8,
                         height: 45,
-                        padding: EdgeInsets.only(
-                            top: 4, left: 16, right: 16, bottom: 4),
+                        padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(50)),
                           color: Colors.green[50],
@@ -128,22 +147,20 @@ class PhonePage extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width * 0.8,
                         height: 45,
-                        padding: EdgeInsets.only(
-                            top: 4, left: 16, right: 16, bottom: 4),
+                        padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(50)),
                           color: Colors.green[50],
                         ),
                         child: TextField(
-                          //controller: email,
+                          controller: _phone,
                           decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              Icons.phone,
-                              color: Colors.grey,
-                            ),
-                            hintText: 'Digite numero de telefone'
-                          ),
+                              border: InputBorder.none,
+                              icon: Icon(
+                                Icons.phone,
+                                color: Colors.grey,
+                              ),
+                              hintText: 'Digite numero de telefone'),
                         ),
                       ),
                       SizedBox(
@@ -157,7 +174,10 @@ class PhonePage extends StatelessWidget {
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
-                            stops: [0.3, 1],
+                            stops: [
+                              0.3,
+                              1
+                            ],
                             colors: [
                               Color(0xFF33691E),
                               Color(0xFF64DD17),
@@ -184,15 +204,30 @@ class PhonePage extends StatelessWidget {
                               ],
                             ),
                             onPressed: () {
-                              // colocar o código valida o código
+                              RegisterUserViewModel _registerUserViewModel = RegisterUserViewModel();
+                              _registerUserViewModel.email = _userStore.strLogin;
+                              _registerUserViewModel.password = _userStore.strPassword;
+                              _registerUserViewModel.name = _userStore.strDisplayName;
+                              _registerUserViewModel.cep = _userStore.strCep;
+                              _registerUserViewModel.address = _userStore.strAddress;
+                              _registerUserViewModel.phone = _phone.text.trim();
 
-                              // se o código for validado ele navega para a próxima tela abaixo
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HomePage(),
-                                ),
-                              );
+                              _userController.post(_registerUserViewModel).then((data) {
+                                // se o código for validado ele navega para a próxima tela abaixo
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginPage(),
+                                    ));
+                              }).catchError((data) {
+                                Fluttertoast.showToast(msg: "Erro ao cadastrar dados");
+                              }).whenComplete(() {
+                                setState(() {
+                                  _registerUserViewModel.busy = false;
+                                });
+                              });
+
+                              // colocar o código valida o código
                             },
                           ),
                         ),
