@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.Dart';
+import 'package:flutter/services.dart';
 
 mixin PortraitModeMixin on StatelessWidget {
   @override
