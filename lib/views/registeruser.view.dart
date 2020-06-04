@@ -473,7 +473,7 @@ class _RegisterUserState extends State<RegisterUser> {
 
                               _userStore.setRegisterUserViewModel = _registerUserViewModel;
 
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                   context,  
                                   MaterialPageRoute(
                                     builder: (context) => PhonePage(),

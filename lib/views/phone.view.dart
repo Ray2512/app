@@ -204,11 +204,11 @@ class _PhonePageState extends State<PhonePage> {
                               ],
                             ),
                             onPressed: () {
-                              
                               _registerUserViewModel = _userStore.getRegisterUserViewModel;
                               _userController.post(_registerUserViewModel).then((data) {
+                                Fluttertoast.showToast(msg: "Cadastro realizado com sucesso");
                                 // se o código for validado ele navega para a próxima tela abaixo
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => LoginPage(),
@@ -220,7 +220,6 @@ class _PhonePageState extends State<PhonePage> {
                                   _registerUserViewModel.busy = false;
                                 });
                               });
-
                               // colocar o código valida o código
                             },
                           ),
