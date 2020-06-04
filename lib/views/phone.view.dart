@@ -205,12 +205,7 @@ class _PhonePageState extends State<PhonePage> {
                             ),
                             onPressed: () {
                               RegisterUserViewModel _registerUserViewModel = RegisterUserViewModel();
-                              _registerUserViewModel.email = _userStore.strLogin;
-                              _registerUserViewModel.password = _userStore.strPassword;
-                              _registerUserViewModel.name = _userStore.strDisplayName;
-                              _registerUserViewModel.cep = _userStore.strCep;
-                              _registerUserViewModel.address = _userStore.strAddress;
-                              _registerUserViewModel.phone = _phone.text.trim();
+                              _registerUserViewModel = _userStore.getRegisterUserViewModel;
 
                               _userController.post(_registerUserViewModel).then((data) {
                                 // se o código for validado ele navega para a próxima tela abaixo

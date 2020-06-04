@@ -471,9 +471,10 @@ class _RegisterUserState extends State<RegisterUser> {
                               _registerUserViewModel.cep = _cep.text.trim();
                               _registerUserViewModel.address = _address.text.trim();
 
-                              _userStore.setUser(_email.text.trim(), _password.text.trim(), _name.text.trim(), _cep.text.trim(), _address.text.trim());
+                              _userStore.setRegisterUserViewModel = _registerUserViewModel;
+
                               Navigator.push(
-                                  context,
+                                  context,  
                                   MaterialPageRoute(
                                     builder: (context) => PhonePage(),
                                   ));
