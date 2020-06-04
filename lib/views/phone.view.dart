@@ -15,7 +15,7 @@ class PhonePage extends StatefulWidget {
 class _PhonePageState extends State<PhonePage> {
   UserStore _userStore;
   UserController _userController = UserController(UserRepository());
-
+  RegisterUserViewModel _registerUserViewModel = RegisterUserViewModel();
   TextEditingController _phone = TextEditingController();
 
   @override
@@ -204,9 +204,8 @@ class _PhonePageState extends State<PhonePage> {
                               ],
                             ),
                             onPressed: () {
-                              RegisterUserViewModel _registerUserViewModel = RegisterUserViewModel();
+                              
                               _registerUserViewModel = _userStore.getRegisterUserViewModel;
-
                               _userController.post(_registerUserViewModel).then((data) {
                                 // se o código for validado ele navega para a próxima tela abaixo
                                 Navigator.push(
